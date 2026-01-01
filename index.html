@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF MAX MOD ACCESS PORTAL</title>
+
+<style>
+*{box-sizing:border-box;font-family:Poppins,system-ui,sans-serif;margin:0;padding:0;}
+body{
+  min-height:100vh;
+  background:#000;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  position:relative;
+}
+canvas{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;
+}
+.header{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:10;
+}
+.logo{
+  font-size:1.2rem;
+  font-weight:700;
+  background:linear-gradient(90deg,#00ff66,#3cffc0);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.menu{font-size:22px;opacity:.8;}
+.card{
+  width:92%;
+  max-width:360px;
+  margin-top:70px;
+  background:rgba(0,0,0,0.75);
+  border-radius:18px;
+  padding:26px 22px 28px;
+  box-shadow:0 20px 50px rgba(0,255,102,.35);
+  position:relative;
+  overflow:hidden;
+  z-index:10;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;
+  width:6px;height:100%;
+  background:linear-gradient(180deg,#00ff66,#3cffc0);
+}
+h1{margin:0;font-size:1.6rem;}
+.sub{color:#b5b9d6;font-size:.9rem;margin:6px 0 18px;}
+label{font-size:.9rem;color:#dfe3ff;}
+input{
+  width:100%;
+  margin:6px 0 14px;
+  padding:13px 14px;
+  border-radius:12px;
+  border:none;
+  background:#0f1324;
+  color:#fff;
+  outline:none;
+}
+.check{display:flex;align-items:center;gap:10px;margin:6px 0 16px;font-size:.9rem;}
+.message{display:none;padding:12px 14px;border-radius:12px;margin-bottom:16px;font-weight:600;}
+.message.success{background:rgba(0,255,102,.4);color:#000;}
+.message.error{background:rgba(255,0,0,.5);}
+.okbtn{
+  background:#000;
+  color:#00ff66;
+  border:none;
+  border-radius:10px;
+  padding:6px 14px;
+  margin-left:10px;
+  cursor:pointer;
+}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  font-weight:600;
+  background:linear-gradient(90deg,#00ff66,#3cffc0);
+}
+label,input,button,h1,.sub{text-shadow:0 0 6px #00ff66;}
+</style>
+</head>
+
+<body>
+
+<canvas id="rain"></canvas>
+
+<div class="header">
+  <div class="logo">FF MAX MOD ACCESS PORTAL 📃</div>
+  <div class="menu">☰</div>
+</div>
+
+<div class="card">
+  <h1>Welcome Back</h1>
+  <div class="sub">Sign in to access your account</div>
+
+  <label>Username</label>
+  <input type="text" id="username">
+
+  <label>Password</label>
+  <input type="password" id="password">
+
+  <div class="check">
+    <input type="checkbox">
+    <span>Stay logged in</span>
+  </div>
+
+  <div class="message success" id="successMsg">
+    ✓ Login Successful!
+    <button class="okbtn" id="okBtn">OK</button>
+  </div>
+  <div class="message error" id="errorMsg">✖ Invalid Username</div>
+
+  <button id="loginBtn">⮕ Log In</button>
+</div>
+
+<script>
+// 🌧️ NEON RAIN WITH GLOW + WHITE DOT
+const canvas=document.getElementById("rain");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+window.onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
+
+const drops=[];
+for(let i=0;i<220;i++){
+  drops.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    l:12+Math.random()*22,
+    s:2+Math.random()*4
+  });
+}
+
+function drawRain(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drops.forEach(d=>{
+    ctx.strokeStyle='rgba(0,255,102,0.6)';
+    ctx.shadowColor='#00ff66';
+    ctx.shadowBlur=25;
+    ctx.lineWidth=1.2;
+    ctx.beginPath();
+    ctx.moveTo(d.x,d.y);
+    ctx.lineTo(d.x,d.y+d.l);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.fillStyle='rgba(255,255,255,0.9)';
+    ctx.shadowColor='#ffffff';
+    ctx.shadowBlur=20;
+    ctx.arc(d.x,d.y+d.l,2.2,0,Math.PI*2);
+    ctx.fill();
+
+    d.y+=d.s;
+    if(d.y>canvas.height){
+      d.y=-30;
+      d.x=Math.random()*canvas.width;
+    }
+  });
+  requestAnimationFrame(drawRain);
+}
+drawRain();
+
+// LOGIN
+const loginBtn=document.getElementById("loginBtn");
+const successMsg=document.getElementById("successMsg");
+const errorMsg=document.getElementById("errorMsg");
+const okBtn=document.getElementById("okBtn");
+
+const validUsername="AshutosH Kumar";
+
+loginBtn.onclick=()=>{
+  if(document.getElementById("username").value.trim()!==validUsername){
+    errorMsg.style.display="block";
+    successMsg.style.display="none";
+    return;
+  }
+  successMsg.style.display="flex";
+  errorMsg.style.display="none";
+};
+
+okBtn.onclick=()=>{
+  window.open("https://ffmaxlaicesepagecom.edgeone.app/","_blank");
+};
+</script>
+
+</body>
+</html>
